@@ -20,7 +20,7 @@
   <script type="text/babel">
     const { useState, useMemo, useEffect } = React;
 
-    // 통합 주차별 데이터 (매주 계속 누적됩니다)
+    // 통합 주차별 데이터 (이미지 경로 연결 포함)
     const WEEKLY_DATA = {
       availableWeeks: ["26/10/20", "26/10/13"],
       weeks: {
@@ -36,10 +36,50 @@
             { title: "3. 참좋은여행 파격가 직격 텍스트 마케팅", desc: "경쟁사 가격 비교를 직접 언급하며 호주/뉴질랜드 노팁노옵션 특가 및 이탈리아 돌로미티 219만~ 파격 특가 텍스트형 비즈톡 발송", tag: "마케팅 메시지" }
           ],
           newspaperAds: [
-            { id: "np-20-1", date: "10/19(월)", media: "중앙일보", agency: "롯데관광", title: "유럽 특선 (아이슬란드 메인 / 이집트 등)", details: "가을/겨울 아이슬란드 메인 게재, 이집트 등 대표 유럽 특선 라인업", badge: "유럽 특선", badgeColor: "bg-blue-100 text-blue-700" },
-            { id: "np-20-2", date: "10/19(월)", media: "조선일보", agency: "롯데관광", title: "MSC 선사 크루즈 특선", details: "MSC 벨리시마 아시아 3개국 메인, 알래스카, 타히티 크루즈 라인업", badge: "글로벌 크루즈", badgeColor: "bg-purple-100 text-purple-700" },
-            { id: "np-20-3", date: "10/19(월)", media: "조선일보", agency: "롯데관광", title: "미주 특선 (남미 7개국 메인 / 캐나다 서부)", details: "남미 칸 7개국 완전일주 메인 및 캐나다 서부 프리미엄 상품", badge: "미주/중남미", badgeColor: "bg-indigo-100 text-indigo-700" },
-            { id: "np-20-4", date: "10/20(화)", media: "조선일보", agency: "롯데관광", title: "유럽 비즈니스석 특선 (에미레이트/대한항공)", details: "에미레이트 항공 비즈니스석 중동/아프리카(요르단, 이집트) 및 유럽 대표 상품", badge: "비즈니스 특전", badgeColor: "bg-amber-100 text-amber-700" }
+            { 
+              id: "np-20-1", 
+              date: "10/19(월)", 
+              media: "중앙일보", 
+              agency: "롯데관광", 
+              title: "유럽 특선 (포르투갈 완주 419만~ / 이집트 / 튀르키예 등)", 
+              details: "대한항공 리스본 직항 포르투갈 메인, 카이로 직항 이집트, 튀르키예, 이탈리아 등 게재", 
+              badge: "유럽 특선", 
+              badgeColor: "bg-blue-100 text-blue-700",
+              imageUrl: "images/1019_joongang_1.jpg" // 👈 이미지 연결
+            },
+            { 
+              id: "np-20-2", 
+              date: "10/19(월)", 
+              media: "조선일보", 
+              agency: "롯데관광", 
+              title: "이스터섬+중남미+멕시코 디스커버리 크루즈 18일 (3,600만~)", 
+              details: "이스터섬 2박 연박 포함 비즈니스 클래스 크루즈 메인 및 MSC 벨리시마 아시아 3개국 게재", 
+              badge: "글로벌 크루즈", 
+              badgeColor: "bg-purple-100 text-purple-700",
+              imageUrl: "images/1019_chosun_1.jpg" // 👈 이미지 연결
+            },
+            { 
+              id: "np-20-3", 
+              date: "10/19(월)", 
+              media: "조선일보", 
+              agency: "롯데관광", 
+              title: "대한항공 카이로 특별 직항 전세기 이집트 9일 (799만~)", 
+              details: "선착순 40만원 할인, 월드체인 5성급 특급호텔 및 국내선 2회 탑승 편안한 일정", 
+              badge: "중동 전세기", 
+              badgeColor: "bg-amber-100 text-amber-700",
+              imageUrl: "images/1019_chosun_2.jpg" // 👈 이미지 연결
+            },
+            { 
+              id: "np-20-4", 
+              date: "10/20(화)", 
+              media: "조선일보", 
+              agency: "롯데관광", 
+              title: "유럽 비즈니스석 특선 (에미레이트/대한항공)", 
+              details: "에미레이트 항공 비즈니스석 탑승 중동/아프리카(요르단, 이집트) 및 유럽 대표 상품", 
+              badge: "비즈니스 특전", 
+              badgeColor: "bg-indigo-100 text-indigo-700",
+              imageUrl: "images/1020_chosun_1.jpg" // 👈 이미지 연결
+            }
           ],
           competitorPromos: [
             { id: "promo-20-1", agency: "노랑풍선", title: "노랑풍선 '미리 준비 동남아 얼리버드'", period: "예약: 10/19~11/08 | 출발: 12/01~26/03/31", type: "동남아 집중전", benefits: ["선착순 500명 할인 쿠폰 (150만원 이상 10만 / 80만 이상 5만 / 50만 이상 3만 / 20만 이상 2만원)", "노랑풍선 포인트 2% 더블 적립 혜택", "겨울 성수기 동남아 전 노선 대상 얼리버드"] },
@@ -104,6 +144,9 @@
       const [activeTab, setActiveTab] = useState("all");
       const [selectedAgency, setSelectedAgency] = useState("ALL");
       const [searchTerm, setSearchTerm] = useState("");
+      
+      // 이미지 팝업 모달 상태
+      const [selectedImage, setSelectedImage] = useState(null);
 
       useEffect(() => {
         if (window.lucide) window.lucide.createIcons();
@@ -299,6 +342,7 @@
                       <th className="py-2.5 px-3.5 font-bold">매체</th>
                       <th className="py-2.5 px-3.5 font-bold">여행사</th>
                       <th className="py-2.5 px-3.5 font-bold">광고 타이틀 및 주요 상품 내용</th>
+                      <th className="py-2.5 px-3.5 font-bold text-center">지면 이미지</th>
                       <th className="py-2.5 px-3.5 font-bold text-right">포지셔닝</th>
                     </tr>
                   </thead>
@@ -313,6 +357,19 @@
                         <td className="py-3 px-3.5">
                           <div className="font-bold text-slate-900 text-xs mb-0.5">{ad.title}</div>
                           <div className="text-slate-500 text-[11px] leading-relaxed">{ad.details}</div>
+                        </td>
+                        {/* 지면 이미지 보기 버튼 */}
+                        <td className="py-3 px-3.5 text-center whitespace-nowrap">
+                          {ad.imageUrl ? (
+                            <button
+                              onClick={() => setSelectedImage({ title: ad.title, media: ad.media, url: ad.imageUrl })}
+                              className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold bg-blue-50 text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-100 transition"
+                            >
+                              🖼️ 지면 보기
+                            </button>
+                          ) : (
+                            <span className="text-slate-300 text-[11px]">미첨부</span>
+                          )}
                         </td>
                         <td className="py-3 px-3.5 text-right whitespace-nowrap">
                           <span className={`px-2 py-0.5 rounded text-[11px] font-bold ${ad.badgeColor}`}>{ad.badge}</span>
@@ -413,6 +470,36 @@
                 ))}
               </div>
             </section>
+          )}
+
+          {/* 지면 이미지 팝업 모달 */}
+          {selectedImage && (
+            <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
+              <div className="bg-white rounded-2xl max-w-4xl w-full p-4 max-h-[90vh] flex flex-col shadow-2xl">
+                <div className="flex justify-between items-center pb-3 border-b border-slate-200">
+                  <div className="font-bold text-sm text-slate-800">
+                    [{selectedImage.media}] {selectedImage.title}
+                  </div>
+                  <button 
+                    onClick={() => setSelectedImage(null)}
+                    className="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold"
+                  >
+                    ✕ 닫기
+                  </button>
+                </div>
+                <div className="flex-1 overflow-auto p-4 flex justify-center bg-slate-100 rounded-xl mt-3">
+                  <img 
+                    src={selectedImage.url} 
+                    alt={selectedImage.title}
+                    className="max-w-full h-auto rounded shadow-lg"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "https://via.placeholder.com/600x800?text=이미지+파일을+찾을+수+없습니다+(images+폴더+확인)";
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
           )}
 
           {/* Footer */}
